@@ -23,13 +23,29 @@ spec:
       containers:
       - name: mysql
         image: mlndockerhub/mysql:v1
-        readinessProbe:
+        readinessProbe: # readiness probe
           tcpSocket:
             port: 3306
           initialDelaySeconds: 15
           periodSeconds: 10
-        livenessProbe:
+        livenessProbe: # liveness probe
           tcpSocket:
             port: 3306
           initialDelaySeconds: 15
           periodSeconds: 10
+
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+    tier: db
+    project: expense
+  ports:
+  - name: mysql
+    protocol: "TCP"
+    port: 3306
+    targetPort: 3306
